@@ -13,8 +13,8 @@
 
     h1 {
       font-weight: 700;
-      font-size: 28px;
-      margin-bottom: 10px;
+      font-size: 24px;
+      margin-bottom: 5px;
     }
 
     .instruction {
@@ -24,65 +24,118 @@
     }
 
     .message {
-      border: 2px solid;
-      border-radius: 10px;
-      padding: 10px 15px;
-      margin: 10px 0;
+      position: relative;
+      max-width: 70%;
+      padding: 12px 18px;
+      margin: 12px 0;
       background-color: white;
+      border-radius: 20px;
+      border: 3px solid;
+      text-align: left;
+      font-size: 15px;
+      word-break: break-word;
     }
 
-    .message:nth-child(odd) {
-      border-color: #fbb1bd; /* 粉紅 */
+    .message::after {
+      content: "";
+      position: absolute;
+      top: 12px;
+      left: -10px;
+      width: 0;
+      height: 0;
+      border-top: 10px solid transparent;
+      border-bottom: 10px solid transparent;
+      border-right: 10px solid white;
     }
 
-    .message:nth-child(even) {
-      border-color: #b1d3fb; /* 淡藍 */
+    #messages {
+      display: flex;
+      flex-direction: column;
     }
 
     #newMessage {
       width: 100%;
-      height: 80px;
-      margin-top: 10px;
+      height: 60px;
       font-size: 14px;
       font-family: "Noto Serif TC", serif;
+      padding: 10px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      resize: none;
     }
 
     button {
       background-color: #4682B4;
       color: white;
       border: none;
-      padding: 10px 20px;
+      padding: 8px 16px;
       border-radius: 8px;
       margin-top: 10px;
       cursor: pointer;
+      font-size: 14px;
     }
 
     button:hover {
       background-color: #3571a6;
     }
-
   </style>
 </head>
 <body>
   <h1>一日一點滴</h1>
-  <div class="instruction">留下今天的心情、想法、或任何一點點的小事吧！</div>
+  <div class="instruction">在這裡留下今天的小故事、小心情吧～</div>
 
   <div id="messages"></div>
 
-  <textarea id="newMessage" placeholder="輸入留言..."></textarea><br>
+  <textarea id="newMessage" placeholder="請輸入留言..."></textarea><br>
   <button onclick="addMessage()">送出</button>
 
   <script>
+    const pastelColors = [
+      "#FFD1DC", // 淡粉
+      "#FFECB3", // 淡黃
+      "#C8E6C9", // 淡綠
+      "#D1C4E9", // 淡紫
+      "#B3E5FC", // 淡藍
+      "#FFF9C4", // 奶油
+      "#E6EE9C", // 檸檬綠
+      "#F8BBD0", // 粉紅
+      "#DCEDC8", // 淡青綠
+      "#F0F4C3"  // 淡橄欖
+    ];
+
+    // 載入儲存的留言
+    window.onload = function () {
+      const stored = localStorage.getItem("messages");
+      if (stored) {
+        const msgs = JSON.parse(stored);
+        msgs.forEach(msg => {
+          addMessageElement(msg.text, msg.color);
+        });
+      }
+    }
+
     function addMessage() {
-      const msg = document.getElementById("newMessage").value;
-      if (msg.trim() === "") return;
+      const input = document.getElementById("newMessage");
+      const text = input.value.trim();
+      if (text === "") return;
 
-      const messageDiv = document.createElement("div");
-      messageDiv.className = "message";
-      messageDiv.textContent = msg;
+      const color = pastelColors[Math.floor(Math.random() * pastelColors.length)];
+      addMessageElement(text, color);
 
-      document.getElementById("messages").appendChild(messageDiv);
-      document.getElementById("newMessage").value = "";
+      // 儲存到 localStorage
+      let messages = JSON.parse(localStorage.getItem("messages") || "[]");
+      messages.push({ text: text, color: color });
+      localStorage.setItem("messages", JSON.stringify(messages));
+
+      input.value = "";
+    }
+
+    function addMessageElement(text, color) {
+      const div = document.createElement("div");
+      div.className = "message";
+      div.style.borderColor = color;
+      div.textContent = text;
+      document.getElementById("messages").appendChild(div);
     }
   </script>
 </body>
