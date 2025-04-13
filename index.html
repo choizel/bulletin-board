@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <title>一日一點滴</title>
+  <style>
+    body {
+      font-family: "Helvetica", sans-serif;
+      background-color: #C4F0FD;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #ffffff;
+      background-color: #008CBA;
+      padding: 20px;
+      border-radius: 20px;
+      margin-bottom: 30px;
+    }
+
+    #form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+
+    input, textarea {
+      width: 80%;
+      max-width: 400px;
+      margin-bottom: 10px;
+      padding: 10px;
+      border: 2px solid #89CFF0;
+      border-radius: 10px;
+      font-size: 16px;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #008CBA;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    #messages {
+      max-width: 600px;
+      margin: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .bubble {
+      background-color: white;
+      padding: 15px;
+      border-radius: 20px;
+      box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+      position: relative;
+      word-wrap: break-word;
+    }
+
+    .bubble .name {
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 5px;
+    }
+
+    .bubble .time {
+      font-size: 12px;
+      color: gray;
+      position: absolute;
+      bottom: 8px;
+      right: 15px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>一日一點滴</h1>
+
+  <div id="form">
+    <input type="text" id="nameInput" placeholder="你的名字">
+    <textarea id="messageInput" rows="3" placeholder="想說些什麼？"></textarea>
+    <button onclick="addMessage()">送出</button>
+  </div>
+
+  <div id="messages"></div>
+
+  <script>
+    function addMessage() {
+      const name = document.getElementById("nameInput").value.trim();
+      const message = document.getElementById("messageInput").value.trim();
+      if (!name || !message) return;
+
+      const time = new Date().toLocaleTimeString();
+      const messageBox = document.createElement("div");
+      messageBox.className = "bubble";
+
+      messageBox.innerHTML = `
+        <div class="name">${name}</div>
+        <div class="content">${message}</div>
+        <div class="time">${time}</div>
+      `;
+
+      document.getElementById("messages").appendChild(messageBox);
+
+      // 清空輸入欄
+      document.getElementById("nameInput").value = "";
+      document.getElementById("messageInput").value = "";
+    }
+  </script>
+
+</body>
+</html>
