@@ -3,117 +3,87 @@
 <head>
   <meta charset="UTF-8">
   <title>一日一點滴</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700&display=swap" rel="stylesheet">
   <style>
     body {
-      font-family: "Helvetica", sans-serif;
+      font-family: "Noto Serif TC", serif;
       background-color: #C4F0FD;
-      margin: 0;
       padding: 20px;
     }
 
     h1 {
-      text-align: center;
-      color: #ffffff;
-      background-color: #008CBA;
-      padding: 20px;
-      border-radius: 20px;
-      margin-bottom: 30px;
-    }
-
-    #form {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin-bottom: 30px;
-    }
-
-    input, textarea {
-      width: 80%;
-      max-width: 400px;
+      font-weight: 700;
+      font-size: 28px;
       margin-bottom: 10px;
-      padding: 10px;
-      border: 2px solid #89CFF0;
+    }
+
+    .instruction {
+      font-size: 14px;
+      margin-bottom: 20px;
+      color: #555;
+    }
+
+    .message {
+      border: 2px solid;
       border-radius: 10px;
-      font-size: 16px;
+      padding: 10px 15px;
+      margin: 10px 0;
+      background-color: white;
+    }
+
+    .message:nth-child(odd) {
+      border-color: #fbb1bd; /* 粉紅 */
+    }
+
+    .message:nth-child(even) {
+      border-color: #b1d3fb; /* 淡藍 */
+    }
+
+    #newMessage {
+      width: 100%;
+      height: 80px;
+      margin-top: 10px;
+      font-size: 14px;
+      font-family: "Noto Serif TC", serif;
     }
 
     button {
-      padding: 10px 20px;
-      font-size: 16px;
-      background-color: #008CBA;
+      background-color: #4682B4;
       color: white;
       border: none;
-      border-radius: 10px;
+      padding: 10px 20px;
+      border-radius: 8px;
+      margin-top: 10px;
       cursor: pointer;
     }
 
-    #messages {
-      max-width: 600px;
-      margin: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
+    button:hover {
+      background-color: #3571a6;
     }
 
-    .bubble {
-      background-color: white;
-      padding: 15px;
-      border-radius: 20px;
-      box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
-      position: relative;
-      word-wrap: break-word;
-    }
-
-    .bubble .name {
-      font-weight: bold;
-      color: #333;
-      margin-bottom: 5px;
-    }
-
-    .bubble .time {
-      font-size: 12px;
-      color: gray;
-      position: absolute;
-      bottom: 8px;
-      right: 15px;
-    }
   </style>
 </head>
 <body>
-
   <h1>一日一點滴</h1>
-
-  <div id="form">
-    <input type="text" id="nameInput" placeholder="你的名字">
-    <textarea id="messageInput" rows="3" placeholder="想說些什麼？"></textarea>
-    <button onclick="addMessage()">送出</button>
-  </div>
+  <div class="instruction">留下今天的心情、想法、或任何一點點的小事吧！</div>
 
   <div id="messages"></div>
 
+  <textarea id="newMessage" placeholder="輸入留言..."></textarea><br>
+  <button onclick="addMessage()">送出</button>
+
   <script>
     function addMessage() {
-      const name = document.getElementById("nameInput").value.trim();
-      const message = document.getElementById("messageInput").value.trim();
-      if (!name || !message) return;
+      const msg = document.getElementById("newMessage").value;
+      if (msg.trim() === "") return;
 
-      const time = new Date().toLocaleTimeString();
-      const messageBox = document.createElement("div");
-      messageBox.className = "bubble";
+      const messageDiv = document.createElement("div");
+      messageDiv.className = "message";
+      messageDiv.textContent = msg;
 
-      messageBox.innerHTML = `
-        <div class="name">${name}</div>
-        <div class="content">${message}</div>
-        <div class="time">${time}</div>
-      `;
-
-      document.getElementById("messages").appendChild(messageBox);
-
-      // 清空輸入欄
-      document.getElementById("nameInput").value = "";
-      document.getElementById("messageInput").value = "";
+      document.getElementById("messages").appendChild(messageDiv);
+      document.getElementById("newMessage").value = "";
     }
   </script>
-
 </body>
 </html>
